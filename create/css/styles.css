@@ -1,0 +1,269 @@
+:root{
+    --accent: #8b6cff;
+    --accent-soft: #d8ccff;
+    --text: #111111;
+    --muted: #8f96a3;
+    --border: #e4e6ea;
+    --bg: #ffffff;
+    --danger: #e64b4b;
+  
+    --radius: 10px;
+    --radius-lg: 12px;
+  
+    --input-bg: #f3f4f6;
+    --content-width: 560px;
+  
+    --delete-w: 96px; /* ширина кнопки "Удалить" (визуально близко к скрину) */
+  }
+  
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  
+  body{
+    margin:0;
+    font-family: "Inter", sans-serif;
+    /* типографика ближе к скриншоту */
+    font-size: 14px;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  
+    color:var(--text);
+    background:var(--bg);
+  }
+  
+  .page{
+    min-height:100%;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding: 38px 16px 60px;
+  }
+  
+  .card{
+    width: min(var(--content-width), 100%);
+    padding: 10px 8px 18px;
+  }
+  
+  /* бренд слева */
+  .brand{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start; /* влево */
+    gap: 10px;
+    margin-top: 6px;
+    margin-bottom: 12px;
+  }
+  
+  .logo{
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    margin-bottom: 10px;
+  }
+  
+  .title{
+    margin: 0;
+    font-size: 26px;
+    font-weight: 650; /* было 800 */
+    text-align:left;
+    width: 100%;
+  }
+  
+  .section-title{
+    margin: 18px 0 8px;
+    font-size: 16px;   /* было 15px */
+    font-weight: 800;
+  }
+  
+  .field{ margin: 0 0 6px; }
+  
+  .input{
+    width:100%;
+    height: 42px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--input-bg);
+    padding: 0 14px;
+    font-size: 14px;
+    font-weight: 500;
+    outline: none;
+  }
+  
+  .input::placeholder{ color:#9aa1ad; font-weight: 500; }
+  
+  .input:focus{
+    background:#fff;
+    border-color: rgba(139,108,255,0.6);
+    box-shadow: 0 0 0 3px rgba(139,108,255,0.14);
+  }
+  
+  .input-accent{
+    border-color: rgba(139,108,255,0.65);
+    background:#fff;
+  }
+  
+  .muted{
+    margin: 8px 0 12px;
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--muted);
+    max-width: 520px;
+  }
+  
+  .toggle-row{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    margin: 4px 0 6px;
+  }
+  
+  .toggle-label{
+    font-size: 14px;
+    font-weight: 600;
+    user-select:none;
+  }
+  
+  /* Switch */
+  .switch{
+    position:relative;
+    width: 46px;
+    height: 26px;
+    border: none;
+    padding:0;
+    background: transparent;
+    cursor: pointer;
+  }
+  
+  .switch-track{
+    position:absolute;
+    inset:0;
+    border-radius: 999px;
+    background: #e6e7eb;
+    transition: background .15s ease;
+  }
+  
+  .switch-thumb{
+    position:absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,.18);
+    transition: transform .15s ease;
+  }
+  
+  .switch[aria-checked="true"] .switch-track{ background: var(--accent); }
+  .switch[aria-checked="true"] .switch-thumb{ transform: translateX(20px); }
+  
+  /* List */
+  .list{
+    display:flex;
+    flex-direction:column;
+    gap: 12px;
+    margin: 10px 0 10px;
+  }
+  
+  /* ROW with slide-right delete */
+  .row{
+    position: relative;
+    width: 100%;
+    height: 42px;
+    overflow: hidden;
+  }
+  
+  /* содержимое строки (минус + инпут) */
+  .row-main{
+    position: relative;
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    height: 42px;
+    transform: translateX(0);
+    transition: transform .18s ease;
+  }
+  
+  /* кнопка удалить справа, выезжает */
+  .delete-slide-right{
+    position:absolute;
+    right: 0;
+    top: 0;
+    height: 42px;
+    width: var(--delete-w);
+    border: none;
+    background: var(--danger);
+    color:#fff;
+    font-weight: 700;
+    cursor:pointer;
+  
+    transform: translateX(110%);
+    transition: transform .18s ease;
+  }
+  
+  /* open state: main уезжает влево, delete выезжает справа */
+  .row.is-open .row-main{
+    transform: translateX(calc(-1 * var(--delete-w) - 10px));
+  }
+  .row.is-open .delete-slide-right{
+    transform: translateX(0);
+  }
+  
+  .icon-minus{
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    border: none;
+    background: var(--danger);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    line-height: 1;
+    font-size: 16px;
+    flex: 0 0 auto;
+  }
+  
+  .row .input{
+    flex: 1 1 auto;
+  }
+  
+  /* add buttons */
+  .add-btn{
+    display:inline-flex;
+    align-items:center;
+    gap: 10px;
+    border:none;
+    background: transparent;
+    color: var(--accent);
+    cursor:pointer;
+    padding: 6px 0;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  .plus{ font-size: 24px; line-height: 1; }
+  
+  .footer{ margin-top: 18px; }
+  
+  .primary{
+    width:100%;
+    height: 44px;
+    border-radius: var(--radius-lg);
+    border:none;
+    background: var(--accent);
+    color:#fff;
+    font-weight: 600;   /* было 800 */
+    cursor:pointer;
+    font-size: 18px;
+  }
+  
+  .primary:disabled{
+    background: var(--accent-soft);
+    cursor:not-allowed;
+  }
+  
+  .hidden{ display:none !important; }

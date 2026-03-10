@@ -1,0 +1,269 @@
+:root{
+  --bg: #ffffff;
+  --text: #0b0b0c;
+  --muted: #2a2a2e;
+  --primary: #7B5CFA;     /* фиолетовый как на скрине */
+  --primary-2: #EAE4FF;   /* светлый для soft-кнопки */
+  --outline: rgba(0,0,0,.06);
+
+  --poster-max: 860px;
+  --qr-radius: 52px;
+  --qr-inner-radius: 40px;
+}
+
+*{ box-sizing: border-box; }
+html,body{ height: 100%; }
+body{
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.topbar{
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  padding: 18px 16px 6px;
+}
+
+.btn{
+  border: 0;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform .08s ease, filter .15s ease;
+  user-select: none;
+}
+.btn:active{ transform: translateY(1px); }
+.btn:hover{ filter: brightness(.98); }
+
+.btn-primary{
+  background: var(--primary);
+  color: #fff;
+}
+.btn-soft{
+  background: var(--primary-2);
+  color: var(--primary);
+}
+
+.page{
+  display: flex;
+  justify-content: center;
+  padding: 10px 16px 60px;
+}
+
+.poster{
+  width: min(var(--poster-max), 100%);
+  border: 1px solid var(--outline);
+  padding: 28px 18px 34px;
+  background: #fff;
+}
+
+.poster__head{
+  text-align: center;
+  padding: 10px 10px 18px;
+}
+
+.poster__title{
+  font-weight: 800;
+  font-size: clamp(40px, 5.6vw, 64px);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0 0 12px;
+}
+
+.poster__subtitle{
+  font-weight: 500;
+  font-size: clamp(18px, 2.6vw, 34px);
+  line-height: 1.25;
+  margin: 0;
+  color: #121214;
+}
+
+.editable{
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 10px;
+  outline: none;
+  min-width: 120px;
+}
+.editable:focus{
+  box-shadow: 0 0 0 3px rgba(123, 92, 250, .18);
+  background: rgba(123, 92, 250, .06);
+}
+
+/* QR frame */
+.qrFrame{
+  margin: 14px auto 0;
+  width: min(720px, 100%);
+  background: var(--primary);
+  border-radius: var(--qr-radius);
+  padding: 26px 26px 18px;
+}
+
+.qrFrame__inner{
+  background: #fff;
+  border-radius: var(--qr-inner-radius);
+  padding: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qrMount{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ссылка внизу на фиолетовой плашке */
+.qrFrame__link{
+  margin-top: 18px;
+
+  font-weight: 800;              /* как в рефе */
+  font-size: clamp(28px, 3.4vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: #fff;
+
+  text-align: center;            /* просто центр */
+  width: 100%;
+
+  white-space: nowrap;
+
+  display: block;         /* важно для точных измерений */
+  max-width: 100%;
+  padding: 0 18px;        /* небольшой внутренний отступ как в рефе */
+  box-sizing: border-box;
+
+  overflow: hidden;       /* чтобы не вылезало при мгновенном рендере */
+  text-overflow: clip;
+  text-decoration: none;
+}
+
+/* Печать */
+@page{
+  size: A4;
+  margin: 10mm;
+}
+
+@media print{
+  /* Печатаем фоны и цвета */
+  html, body, *{
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .no-print{ display: none !important; }
+
+  body{
+    background: #fff !important;
+  }
+
+  .page{
+    padding: 0 !important;
+    display: block !important;
+  }
+
+  .poster{
+    border: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 190mm !important;
+    margin: 0 auto !important;
+    background: #fff !important;
+  }
+
+  /* Заголовок + описание по центру */
+  .poster__head{
+    text-align: center !important;
+    padding: 6mm 0 4mm !important;
+    display: block !important;
+  }
+
+  .poster__title{
+    margin: 0 0 3mm !important;
+    padding: 0 !important;
+
+    font-size: 44pt !important;
+    line-height: 1.05 !important;
+
+    font-weight: 700 !important;   /* было 800 → делаем мягче */
+  }
+
+  .poster__subtitle{
+    margin: 0 !important;
+    padding: 0 !important;
+
+    font-size: 22pt !important;   /* ⬆ увеличили */
+    line-height: 1.28 !important;
+
+    font-weight: 500 !important;
+    text-align: center !important;
+  }
+
+  .editable{
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .qrFrame{
+    margin: 4mm auto 0 !important;
+    width: 100% !important;
+    background: var(--primary) !important;
+    border-radius: var(--qr-radius) !important;
+    padding: 10mm !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .qrFrame__inner{
+    background: #fff !important;
+    border-radius: var(--qr-inner-radius) !important;
+    padding: 8mm !important;
+
+    display: flex !important;          /* ✅ */
+    justify-content: center !important;/* ✅ */
+    align-items: center !important;    /* ✅ */
+  }
+
+  /* Помогаем печати SVG */
+  .qrMount{
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  
+  /* А вот это — ключевое: svg делаем блочным и центрируем */
+  .qrMount svg{
+    display: block !important;
+    margin: 0 auto !important;    /* ✅ центр в печати */
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  .qrMount canvas{
+    display: block !important;
+    margin: 0 auto !important;
+  }
+
+  .qrFrame__link{
+    color: #fff !important;
+    font-weight: 800 !important;
+    font-size: 24pt !important;
+    margin-top: 6mm !important;
+  
+    text-align: center !important;
+    width: 100% !important;
+  
+    white-space: nowrap !important;
+  }
+}
+.poster__link,.poster a{text-decoration:none;}

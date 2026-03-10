@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Плакат с QR</title>
+
+  <!-- Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/poster/css/styles.css" />
+</head>
+<body>
+  <header class="topbar no-print">
+    <button class="btn btn-primary" id="btnPrint" type="button">Распечатать плакат</button>
+    <button class="btn btn-soft" id="btnDownload" type="button">Скачать QR код</button>
+  </header>
+
+  <main class="page">
+    <section class="poster" id="poster">
+      <div class="poster__head">
+        <div
+          class="poster__title editable"
+          id="editableTitle"
+          contenteditable="true"
+          spellcheck="false"
+          role="textbox"
+          aria-label="Заголовок"
+        >Займите очередь</div>
+
+        <div
+          class="poster__subtitle editable"
+          id="editableSubtitle"
+          contenteditable="true"
+          spellcheck="false"
+          role="textbox"
+          aria-label="Описание"
+        >Сканируйте QR-код и ждите своей<br/>очереди на экране смартфона</div>
+      </div>
+
+      <div class="qrFrame" aria-label="QR код">
+        <div class="qrFrame__inner">
+          <div id="qrMount" class="qrMount"></div>
+        </div>
+        <a class="qrFrame__link" id="linkText" href="#" target="_blank" rel="noreferrer"></a>
+      </div>
+    </section>
+  </main>
+
+  <!-- QR generator (SVG + logo) -->
+  <script src="https://unpkg.com/qr-code-styling@1.6.0/lib/qr-code-styling.js"></script>
+  <script src="/js/siteBranding.js"></script>
+  <script>SiteBranding.loadAndApply("poster");</script>
+  <script src="/poster/js/script.js"></script>
+</body>
+</html>

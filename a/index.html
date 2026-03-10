@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOFT | Очередь — Табло</title>
+
+  <!-- Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/a/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__left">
+      <div class="queue-name" id="queueName">jandонks-test-2</div>
+    </div>
+
+    <div class="topbar__right">
+      <!-- Кнопка выбора кассы (ОТКРЫВАЕТ "Рабочее место") -->
+      <button class="chip chip--primary" id="cashierBtn" type="button" aria-label="Выбор кассы">
+        <span id="cashierLabel">Касса 1</span>
+        <svg class="ico" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <!-- Пауза/Старт -->
+      <button class="iconbtn iconbtn--soft" id="pauseBtn" type="button" aria-label="Пауза / продолжить">
+        <!-- pause -->
+        <svg class="ico" id="pauseIco" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 6h3v12H7zM14 6h3v12h-3z" fill="currentColor"/>
+        </svg>
+        <!-- play -->
+        <svg class="ico hidden" id="playIco" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9 7l10 5-10 5V7z" fill="currentColor"/>
+        </svg>
+      </button>
+
+      <!-- Настройки -->
+      <button class="iconbtn iconbtn--soft" id="settingsBtn" type="button" aria-label="Настройки">
+  <!-- sliders -->
+    <svg class="ico" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 7h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M18 7h2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M14 7a2 2 0 1 0 0 .01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+
+        <path d="M4 17h2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M10 17h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M8 17a2 2 0 1 0 0 .01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    </button>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="page__inner">
+
+      <div class="statusline" id="statusLine">В очереди никого нет</div>
+
+      <h1 class="title">Номер приглашенного<br/>посетителя</h1>
+
+      <section class="card" aria-label="Карточка посетителя">
+        <div class="card__num" id="currentNumber">001</div>
+        <div class="card__service" id="currentService">gd</div>
+
+        <div class="card__idrow">
+          <div class="mono card__id" id="currentUuid">019c8d69-34c0-7d37-a973-50aeaa5579bd</div>
+          <button class="iconbtn iconbtn--ghost" id="copyUuidBtn" type="button" aria-label="Скопировать заявку">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 8h11v13H8z" fill="none" stroke="currentColor" stroke-width="2" />
+              <path d="M5 16H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v1" fill="none" stroke="currentColor" stroke-width="2" />
+            </svg>
+          </button>
+        </div>
+
+        <button class="btn btn--soft btn--block" id="returnBtn" type="button" disabled>Вернуть в очередь</button>
+      </section>
+
+      <div class="alert hidden" id="pauseAlert">
+        <div class="alert__text">
+          <div id="alertTitle">Обслуживание приостановлено</div>
+          <div class="alert__sub" id="alertSub">Чтобы возобновить работу нажмите <span class="alert__play">▶</span></div>
+        </div>
+      </div>
+
+      <div class="serviceTimer hidden" id="serviceTimer">Время обслуживания клиента: <span id="serviceTimerValue">00:00</span></div>
+
+      <section class="actions">
+        <button class="btn btn--primary btn--wide" id="inviteNextBtn" type="button">Пригласить следующего</button>
+        <button class="btn btn--secondary btn--wide" id="inviteOutBtn" type="button">Пригласить вне очереди</button>
+        <button class="btn btn--success btn--wide hidden" id="servedBtn" type="button">Клиент обслужен</button>
+        <button class="btn btn--outline-blue btn--wide" id="addVisitorBtn" type="button">
+          <span class="btn__ico">
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0z" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M4 21c1.5-4 14.5-4 16 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M19 8v6M16 11h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          Добавить посетителя
+        </button>
+        <button class="btn btn--outline-red btn--wide" id="removeBtn" type="button">Удаление из очереди</button>
+      </section>
+
+    </div>
+  </main>
+
+  <div class="toast hidden" id="toast">Заявка скопирована</div>
+  <div class="backdrop hidden" id="backdrop"></div>
+
+  <!-- Modal: Add visitor -->
+  <section class="modal hidden" id="addModal" role="dialog" aria-modal="true" aria-label="Добавить посетителя">
+    <div class="modal__panel">
+      <button class="modal__close" type="button" data-close="addModal" aria-label="Закрыть"><span>×</span></button>
+
+      <div class="modal__head">
+        <div class="modal__title">Добавить посетителя</div>
+        <div class="modal__subtitle">Введите информацию о посетителе</div>
+      </div>
+
+      <div class="form">
+        <input class="input" id="visitorIdInput" type="text" placeholder="id" />
+        <div class="select" data-dd="service">
+          <button class="select__btn" id="serviceSelectBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span id="serviceSelectLabel" class="muted">Выберите услугу</span>
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="select__menu" role="listbox" aria-label="Услуга">
+            <button class="select__item" type="button" data-value="">Выберите услугу</button>
+            <button class="select__item" type="button" data-value="g">g</button>
+            <button class="select__item" type="button" data-value="gd">gd</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal__actions">
+        <button class="btn btn--secondary btn--wide" type="button" data-close="addModal">Отмена</button>
+        <button class="btn btn--primary btn--wide" id="addSubmitBtn" type="button">Добавить</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal: Workplace -->
+  <section class="modal hidden" id="workModal" role="dialog" aria-modal="true" aria-label="Рабочее место">
+    <div class="modal__panel modal__panel--wide">
+      <div class="modal__head modal__head--center">
+        <div class="modal__title big">Рабочее место</div>
+      </div>
+
+      <div class="work">
+        <div class="label">КАССА</div>
+        <div class="select select--wide" data-dd="workCash">
+          <button class="select__btn" id="workCashBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span id="workCashLabel">Касса 1</span>
+            <svg class="ico" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="select__menu" role="listbox" aria-label="Касса">
+            <button class="select__item" type="button" data-value="">Выберите кассу</button>
+            <button class="select__item" type="button" data-value="Касса 1">Касса 1</button>
+            <button class="select__item" type="button" data-value="Касса 2">Касса 2</button>
+          </div>
+        </div>
+
+        <div class="label mt" id="workServicesLabel">УСЛУГИ</div>
+        <div id="workServices"></div>
+        <div class="hint" id="workServicesHint" style="margin-top:8px">Выберите услуги, которые вы обслуживаете. Посетители с другими услугами будут ждать другие кассы.</div>
+
+        <button class="btn btn--primary btn--block mt2" id="workDoneBtn" type="button">Готово</button>
+      </div>
+
+      <div class="modal__loading hidden" id="workLoading">
+        <div class="spinner" aria-label="Загрузка"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal: Queue settings -->
+  <section class="modal hidden" id="queueModal" role="dialog" aria-modal="true" aria-label="Настройки очереди">
+    <!-- содержимое как было -->
+    <div class="modal__panel modal__panel--tall">
+      <div class="qhead">
+        <button class="qhead__x" type="button" data-close="queueModal" aria-label="Закрыть">×</button>
+        <div class="qhead__title">Настройки очереди</div>
+        <button class="qhead__ok" type="button" id="queueSaveBtn" aria-label="Сохранить">✓</button>
+      </div>
+
+      <div class="qbody">
+        <!-- (оставил без изменений — то же что у тебя было) -->
+        <div class="sec">
+          <div class="sec__title">ИНФОРМАЦИЯ ОБ ОЧЕРЕДИ</div>
+
+          <div class="field">
+            <div class="field__label">Ссылка для посетителей</div>
+            <div class="linkrow">
+              <a class="link" id="visitorLink" href="#" target="_blank" rel="noopener">—</a>
+              <div class="linkrow__icons">
+                <button class="iconbtn iconbtn--ghost" type="button" aria-label="Показать QR">
+                  <svg class="ico" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M14 14h3v3h-3zM17 17h3v3h-3zM14 17h3v3h-3zM20 14v3" fill="none" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                </button>
+                <button class="iconbtn iconbtn--ghost" type="button" aria-label="Скопировать ссылку">
+                  <svg class="ico" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 8h11v13H8z" fill="none" stroke="currentColor" stroke-width="2" />
+                    <path d="M5 16H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v1" fill="none" stroke="currentColor" stroke-width="2" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field__label">Ссылка на экран состояния очереди</div>
+            <div class="linkrow">
+              <a class="link" id="statusLink" href="#" target="_blank" rel="noopener">—</a>
+              <div class="linkrow__icons">
+                <button class="iconbtn iconbtn--ghost" type="button" aria-label="Скопировать ссылку">
+                  <svg class="ico" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 8h11v13H8z" fill="none" stroke="currentColor" stroke-width="2" />
+                    <path d="M5 16H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v1" fill="none" stroke="currentColor" stroke-width="2" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="hint">
+              Используйте ссылку на экран состояния, чтобы отображать текущие приглашенные и предстоящие номера талонов
+              на телевизоре или другом экране
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field__label">Имя очереди</div>
+            <input class="input" id="queueNameInput" type="text" value="" />
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="sec">
+          <div class="sec__title">НАСТРОЙКИ РЕГИСТРАЦИИ</div>
+
+          <div class="togrow">
+            <div>
+              <div class="togrow__title">Самостоятельная регистрация посетителя</div>
+              <div class="togrow__hint">Разрешить или запретить новым посетителям присоединяться к очереди</div>
+            </div>
+            <label class="switch">
+              <input id="selfRegSwitch" type="checkbox" checked>
+              <span class="switch__ui"></span>
+            </label>
+          </div>
+
+          <div class="togrow">
+            <div>
+              <div class="togrow__title">Просить о вводе данных посетителя</div>
+              <div class="togrow__hint">Подсказка для ввода данных посетителя</div>
+            </div>
+            <label class="switch">
+              <input id="requireUserSwitch" type="checkbox" checked>
+              <span class="switch__ui"></span>
+            </label>
+          </div>
+
+          <div class="field">
+            <input class="input" id="userPromptInput" type="text" value="" />
+            <div class="hint">Просьба посетителей вводить некоторую информацию при присоединении к очереди: имя, контактные данные, номер автомобиля и т.д.</div>
+          </div>
+
+          <div class="field">
+            <div class="field__label">Вместимость очереди</div>
+            <input class="input" id="capacityInput" type="text" value="1000" />
+            <div class="hint">Максимальное количество посетителей, которые могут ожидать в очереди одновременно</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="sec">
+          <div class="sec__title">НАСТРОЙКИ УВЕДОМЛЕНИЙ</div>
+          <div class="hint">
+            На устройствах Android посетители уведомляются с помощью Push-сообщений. Но Safari на iOS не поддерживает Push-сообщения,
+            поэтому вы можете настроить список альтернативных способов уведомления посетителей на iOS.
+          </div>
+
+          <div class="togrow">
+            <div class="rowicon">
+              <span class="rowicon__ico">✈️</span>
+              <span>Telegram Messenger</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="switch__ui"></span>
+            </label>
+          </div>
+
+          <div class="togrow">
+            <div class="rowicon">
+              <span class="rowicon__ico">vk</span>
+              <span>vk.com</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="switch__ui"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="sec">
+          <div class="sec__title">ВНЕШНИЙ ВИД</div>
+
+          <div class="field">
+            <div class="field__label">Показать ожидаемое время ожидания</div>
+            <div class="select select--wide" data-dd="waitMode">
+              <button class="select__btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <span>Автоматически рассчитано</span>
+                <svg class="ico" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <div class="select__menu" role="listbox" aria-label="Режим ожидания">
+                <button class="select__item" type="button">Автоматически рассчитано</button>
+                <button class="select__item" type="button">Вручную</button>
+                <button class="select__item" type="button">Не показывать</button>
+              </div>
+            </div>
+            <div class="hint">
+              Система может показать посетителям ожидаемое время ожидания, рассчитанное на основе времени ожидания ранее обслуженных клиентов или времени, которое вы зададите вручную
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field__label">Язык экрана состояния очереди</div>
+            <div class="select select--wide" data-dd="langMode">
+              <button class="select__btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <span id="statusLangLabel">Auto</span>
+                <svg class="ico" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <div class="select__menu" role="listbox" aria-label="Язык">
+                <button class="select__item" type="button" data-value="auto">Auto</button>
+                <button class="select__item" type="button" data-value="ru">Русский</button>
+                <button class="select__item" type="button" data-value="en">English</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="sec">
+          <div class="sec__title">СБРОСИТЬ ОЧЕРЕДЬ</div>
+          <button class="btn btn--danger btn--block" type="button">Сбросить</button>
+          <div class="hint">Сброс очереди очищает список ожидания и сбрасывает нумерацию талонов</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="sec">
+          <div class="sec__title">FEEDBACK</div>
+          <div class="hint">Если вам нужна помощь или вы хотите оставить отзыв, свяжитесь с нами по электронной почте: <span class="link">inbox@qrq.app</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom sheet: pick visitor -->
+  <section class="sheet hidden" id="pickSheet" role="dialog" aria-modal="true" aria-label="Выбор посетителя">
+    <div class="sheet__panel">
+      <div class="sheet__head">
+        <div class="sheet__title" id="pickTitle">Выберите посетителя по номеру</div>
+        <button class="sheet__action" id="pickAction" type="button">Пригласить</button>
+      </div>
+
+      <div class="sheet__list">
+        <button class="visitor" id="visitorRow" type="button">
+          <div class="visitor__ico">
+            <img id="visitorAvatar" alt="" />
+          </div>
+          <div class="visitor__meta">
+            <div class="visitor__num" id="visitorNum">001</div>
+            <div class="visitor__sub mono" id="visitorSub">019c8d69-34c0-7d37-a973-50aeaa5579bd, g</div>
+          </div>
+          <div class="visitor__check" id="visitorCheck" aria-hidden="true">
+            <svg class="ico" width="22" height="22" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 12.5l2.6 2.6L16.5 9.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Confirm modal -->
+  <section class="modal hidden" id="confirmModal" role="dialog" aria-modal="true" aria-label="Подтверждение">
+    <div class="modal__panel modal__panel--confirm">
+      <button class="modal__close" type="button" data-close="confirmModal" aria-label="Закрыть"><span>×</span></button>
+
+      <div class="modal__head modal__head--center">
+        <div class="modal__title big">Вы уверены?</div>
+        <div class="modal__subtitle" id="confirmText">
+          Номер следующего посетителя 002, 019c8d69-34c0-7d37-a973-50aeaa5579bd, g. Хотите пригласить следующего посетителя?
+        </div>
+      </div>
+
+      <div class="modal__actions">
+        <button class="btn btn--primary btn--wide" id="confirmYes" type="button">Да</button>
+        <button class="btn btn--secondary btn--wide" data-close="confirmModal" type="button">Нет</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="/js/siteBranding.js"></script>
+  <script>SiteBranding.loadAndApply("manage");</script>
+  <script src="/a/js/config.js"></script>
+  <script src="/js/i18n.js"></script>
+  <script src="/a/js/script.js"></script>
+</body>
+</html>

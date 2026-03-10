@@ -1,0 +1,33 @@
+RewriteEngine On
+
+# 1) Serve existing files/directories as-is (CSS/JS/images must not be rewritten)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 2) API routes -> /api/index.php
+RewriteRule ^api/?$ api/index.php [L,QSA]
+RewriteRule ^api/(.*)$ api/index.php [L,QSA]
+
+# 3) Fix asset paths under pretty URLs
+RewriteRule ^status/\d+/(css|js)/(.*)$ status/$1/$2 [L]
+RewriteRule ^poster/\d+/(css|js)/(.*)$ poster/$1/$2 [L]
+RewriteRule ^a/\d+/[^/]+/(css|js)/(.*)$ a/$1/$2 [L]
+RewriteRule ^create/[^/]+/(css|js|img)/(.*)$ create/$1/$2 [L]
+RewriteRule ^create/success/[^/]+/(css|js|img)/(.*)$ create/success/$1/$2 [L]
+
+# 4) Pretty frontend routes (like the example service)
+RewriteRule ^admin/?$ admin/index.php [L]
+
+RewriteRule ^create/?$ create/index.php [L]
+RewriteRule ^create/[^/]+/?$ create/index.php [L]
+RewriteRule ^create/success/?$ create/success/index.php [L]
+RewriteRule ^create/success/[^/]+/?$ create/success/index.php [L]
+
+RewriteRule ^poster/\d+/?$ poster/index.php [L]
+RewriteRule ^status/\d+/?$ status/index.php [L]
+RewriteRule ^a/\d+/[^/]+/?$ a/index.php [L]
+RewriteRule ^\d+/?$ index.php [L]
+
+# 5) Fallback
+RewriteRule ^ index.html [L]

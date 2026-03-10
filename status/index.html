@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Очередь</title>
+
+  <!-- Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/status/css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <main class="main">
+      <section class="panel panel--left">
+        <div class="panel__header">
+          <h1 class="panel__title" id="leftTitle">Приготовиться номерам</h1>
+        </div>
+        <div class="panel__body">
+          <div class="prepareNumbers" id="prepareNumbers"></div>
+        </div>
+      </section>
+
+      <div class="divider" aria-hidden="true"></div>
+
+      <section class="panel panel--right">
+        <div class="panel__header panel__header--right">
+          <h1 class="panel__title">Приглашены клиенты</h1>
+        </div>
+
+        <div class="panel__body panel__body--right">
+          <div class="cashRows">
+            <div class="cashRow">
+              <div class="cashRow__label">Касса 1:</div>
+              <div class="pill" id="cash1Pill">000</div>
+            </div>
+            <div class="cashRow">
+              <div class="cashRow__label">Касса 2:</div>
+              <div class="pill" id="cash2Pill">000</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__left">
+        <img class="logo" id="logo" data-brand-logo alt="logo" />
+      </div>
+
+      <div class="footer__center" id="footerText">В очереди никого нет</div>
+
+      <button class="footer__right soundBtn" id="soundBtn" type="button" aria-label="Звук">
+        <!-- иконка меняется через JS -->
+        <span class="soundIcon" id="soundIcon" aria-hidden="true"></span>
+      </button>
+    </footer>
+  </div>
+
+  <script src="/js/siteBranding.js"></script>
+  <script>SiteBranding.loadAndApply("status");</script>
+  <script src="/status/js/config.js"></script>
+  <script src="/js/i18n.js"></script>
+  <script src="/status/js/script.js"></script>
+</body>
+</html>

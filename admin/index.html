@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Админ панель</title>
+  <link rel="icon" href="/img/logo.svg" />
+  <link rel="stylesheet" href="/admin/css/styles.css" />
+</head>
+<body>
+  <main class="wrap">
+    <section class="card" id="loginCard">
+      <h1>Доступ к созданию очередей</h1>
+      <p class="muted">Войдите, чтобы создавать ссылки на страницу создания очереди и управлять настройками.</p>
+
+      <div class="formCol">
+        <label>
+          <span>Логин</span>
+          <input id="u" autocomplete="username" />
+        </label>
+        <label>
+          <span>Пароль</span>
+          <input id="p" type="password" autocomplete="current-password" />
+        </label>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="rememberMe" />
+        <span>Запомнить меня</span>
+      </label>
+
+      <div class="actions">
+        <button class="btn primary" id="loginBtn">Войти</button>
+      </div>
+
+      <div class="alert" id="loginErr" hidden>Неверный логин или пароль</div>
+    </section>
+
+    <section class="card" id="setupCard" hidden>
+      <h1>Первичная настройка</h1>
+      <p class="muted">Создайте первый аккаунт администратора. Эта форма доступна только пока пользователей нет и только с этого компьютера.</p>
+
+      <div class="formCol">
+        <label>
+          <span>Логин</span>
+          <input id="su" autocomplete="username" />
+        </label>
+        <label>
+          <span>Пароль</span>
+          <input id="sp" type="password" autocomplete="new-password" />
+        </label>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="setupBtn">Создать аккаунт</button>
+      </div>
+
+      <div class="alert" id="setupErr" hidden></div>
+    </section>
+
+    <section class="card" id="panelCard" hidden>
+      <div class="top">
+        <h1>Панель администратора</h1>
+        <div class="topRight">
+          <div class="whoami" id="whoamiBox">Вы вошли как: <strong id="whoamiName">—</strong></div>
+          <button class="btn" id="logoutBtn">Выйти</button>
+        </div>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Разделы">
+        <button class="tab is-active" role="tab" aria-selected="true" id="tabLinks">Ссылки</button>
+        <button class="tab" role="tab" aria-selected="false" id="tabSecurity">Безопасность</button>
+        <button class="tab" role="tab" aria-selected="false" id="tabBranding">Брендинг</button>
+        <button class="tab" role="tab" aria-selected="false" id="tabSpeech" hidden>Yandex Speech</button>
+        <button class="tab" role="tab" aria-selected="false" id="tabUsers" hidden>Пользователи</button>
+        <button class="tab" role="tab" aria-selected="false" id="tabLogs" hidden>Логи</button>
+        <button class="tab" role="tab" aria-selected="false" id="tabBackups" hidden>Бекапы</button>
+      </div>
+
+      <!-- Links -->
+      <section class="tabpane" id="paneLinks">
+        <h2 class="h2">Ссылки на создание очереди</h2>
+        <div class="newToken">
+          <input id="label" placeholder="Комментарий (необязательно)" />
+          <button class="btn primary" id="newBtn">Создать ссылку</button>
+        </div>
+
+        <div class="list" id="list"></div>
+        <p class="muted small">Созданные ссылки работают, пока вы их не отзовёте.</p>
+      </section>
+
+      <!-- Security -->
+      <section class="tabpane" id="paneSecurity" hidden>
+        <h2 class="h2">Смена пароля</h2>
+        <div class="pw" id="pwBox">
+          <div class="formCol">
+            <input id="curPw" type="password" placeholder="Текущий пароль" autocomplete="current-password" />
+            <input id="newPw" type="password" placeholder="Новый пароль (мин. 6 символов)" autocomplete="new-password" />
+            <input id="newPw2" type="password" placeholder="Повторите новый пароль" autocomplete="new-password" />
+          </div>
+          <div class="actions">
+            <button class="btn primary" id="changePwBtn">Сохранить</button>
+            <button class="btn" id="changePwCancelBtn" type="button">Отмена</button>
+          </div>
+          <div class="alert" id="pwErr" hidden></div>
+          <div class="ok" id="pwOk" hidden>Пароль обновлён. Долгие сессии сброшены.</div>
+        </div>
+
+        <h2 class="h2">Сессии</h2>
+        <p class="muted">Показаны короткие (обычная) и долгие (Запомнить меня) сессии.</p>
+        <div class="actions">
+          <button class="btn" id="logoutAllSessionsBtn" type="button">Выйти со всех устройств</button>
+        </div>
+        <div class="sessions" id="sessionsList"></div>
+      </section>
+
+            <!-- Branding -->
+      
+<section class="tabpane" id="paneBranding" hidden>
+  <h2 class="h2">Брендинг</h2>
+  <p class="muted">Настройки применяются ко всем очередям. Нажмите «Редактировать» напротив страницы.</p>
+
+  <div class="list" id="brandingList"></div>
+</section>
+
+<!-- Branding modal -->
+<div class="modal" id="brandingModal" hidden>
+  <div class="modal__backdrop" data-close="1"></div>
+  <div class="modal__panel">
+    <div class="modal__head">
+      <div class="modal__title" id="brandingModalTitle">Брендинг</div>
+      <button class="iconBtn" id="brandingClose" type="button" aria-label="Закрыть">×</button>
+    </div>
+
+    <div class="formCol formCol--spaced">
+      <label>
+        <span>Основной цвет</span>
+        <input type="color" id="brandPrimary" />
+      </label>
+
+      <label>
+        <span>Акцентный цвет</span>
+        <input type="color" id="brandAccent" />
+      </label>
+
+      <label id="brandThemeRow" class="hidden">
+        <span>Тема (только для табло)</span>
+        <select id="brandThemeMode">
+          <option value="auto">Автоматически</option>
+          <option value="light">Светлая</option>
+          <option value="dark">Ночная</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Логотип (файл)</span>
+        <input type="file" id="brandLogoFile" accept=".png,.jpg,.jpeg,.svg,.webp" />
+      </label>
+
+      <label>
+        <span>Favicon (файл)</span>
+        <input type="file" id="brandFaviconFile" accept=".ico,.png,.jpg,.jpeg,.svg,.webp" />
+      </label>
+
+      <label id="brandSoundRow" class="hidden">
+        <span>Звук уведомления (файл)</span>
+        <input type="file" id="brandSoundFile" accept=".wav,.mp3,.ogg" />
+      </label>
+
+      <div class="rowBtns">
+        <button class="btn btn--secondary" id="brandingCancel" type="button">Отмена</button>
+        <button class="btn btn--primary" id="brandingSave" type="button">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+            <!-- Users (owner only) -->
+
+<section class="tabpane" id="paneSpeech" hidden>
+  <h2 class="h2">Yandex Speech</h2>
+  <p class="muted">Настройка озвучки табло статуса. Шаблон поддерживает переменные <code>{number}</code> и <code>{cashier}</code>.</p>
+  <div class="formCol formCol--spaced">
+    <label class="rowLine rowLine--check"><input type="checkbox" id="spEnabled" /> <span>Включить Yandex Speech для табло статуса</span></label>
+    <label>
+      <span>API key</span>
+      <input id="spApiKey" type="text" autocomplete="off" />
+    </label>
+    <label>
+      <span>Folder ID</span>
+      <input id="spFolderId" type="text" autocomplete="off" />
+    </label>
+    <div class="row2 row2--triple">
+      <label>
+        <span>Голос</span>
+        <input id="spVoice" type="text" placeholder="filipp" />
+      </label>
+      <label>
+        <span>Emotion</span>
+        <input id="spEmotion" type="text" placeholder="good / neutral" />
+      </label>
+      <label>
+        <span>Скорость</span>
+        <input id="spSpeed" type="number" min="0.1" max="3" step="0.1" value="1" />
+      </label>
+    </div>
+    <label>
+      <span>Шаблон текста</span>
+      <textarea id="spTemplate" rows="4"></textarea>
+    </label>
+    <div class="rowBtns">
+      <button class="btn btn--secondary" id="spTest" type="button">Тест озвучки</button>
+      <button class="btn btn--primary" id="spSave" type="button">Сохранить</button>
+    </div>
+  </div>
+</section>
+
+      <section class="tabpane" id="paneUsers" hidden>
+        <h2 class="h2">Пользователи</h2>
+        <p class="muted">Создавайте дополнительных администраторов и назначайте доступ к разделам мини-админки.</p>
+
+        <div class="userCreate formCol">
+          <label>
+            <span>Логин</span>
+            <input id="newUserName" placeholder="Логин" />
+          </label>
+          <label>
+            <span>Пароль</span>
+            <input id="newUserPass" type="password" placeholder="Пароль (мин. 6 символов)" />
+          </label>
+          <label>
+            <span>Комментарий</span>
+            <input id="newUserComment" placeholder="Комментарий (необязательно)" />
+          </label>
+
+          <div class="permBox">
+            <div class="permTitle">Доступ к разделам</div>
+            <label class="check"><input type="checkbox" id="perm_links" /> <span>Ссылки</span></label>
+            <label class="check"><input type="checkbox" id="perm_branding" /> <span>Брендинг</span></label>
+            <label class="check"><input type="checkbox" id="perm_users" /> <span>Пользователи</span></label>
+          </div>
+
+          <div class="actions">
+            <button class="btn primary" id="createUserBtn" type="button">Добавить</button>
+          </div>
+        </div>
+
+        <div class="alert" id="usersErr" hidden></div>
+        <div class="users" id="usersList"></div>
+      </section>
+      <section class="tabpane" id="paneLogs" hidden>
+        <h2 class="h2">Логи</h2>
+        <p class="muted">Все действия сайта + история запросов к API. Можно включить автоудаление логов.</p>
+
+        <div class="formCol formCol--spaced" style="margin-top:10px">
+          <label class="rowLine rowLine--check"><input type="checkbox" id="lgAuto" /> <span>Включить автоудаление логов</span></label>
+          <label>
+            <span>Хранить (дней)</span>
+            <input type="number" id="lgKeepDays" min="1" step="1" value="30" />
+          </label>
+          <div class="row2">
+            <label>
+              <span>Дата с</span>
+              <input type="date" id="lgDateFrom" />
+            </label>
+            <label>
+              <span>Дата по</span>
+              <input type="date" id="lgDateTo" />
+            </label>
+          </div>
+          <div class="row2 row2--triple">
+            <label>
+              <span>Уровень</span>
+              <select id="lgLevel">
+                <option value="">Все</option>
+                <option value="info">info</option>
+                <option value="warn">warn</option>
+                <option value="error">error</option>
+              </select>
+            </label>
+            <label>
+              <span>Источник</span>
+              <select id="lgSource">
+                <option value="">Все</option>
+              </select>
+            </label>
+            <label>
+              <span>На странице</span>
+              <select id="lgPerPage">
+                <option value="25">25</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+              </select>
+            </label>
+          </div>
+          <div class="row2 row2--triple">
+            <label>
+              <span>Статус API</span>
+              <select id="lgApiStatus">
+                <option value="">Все</option>
+                <option value="2xx">2xx</option>
+                <option value="3xx">3xx</option>
+                <option value="4xx">4xx</option>
+                <option value="5xx">5xx</option>
+                <option value="200">200</option>
+                <option value="400">400</option>
+                <option value="401">401</option>
+                <option value="403">403</option>
+                <option value="404">404</option>
+                <option value="500">500</option>
+              </select>
+            </label>
+          </div>
+          <div class="rowBtns">
+            <button class="btn btn--secondary" id="lgApply" type="button">Применить фильтр</button>
+            <button class="btn btn--secondary" id="lgSave" type="button">Сохранить</button>
+            <button class="btn btn--danger" id="lgClear" type="button">Очистить сейчас</button>
+          </div>
+        </div>
+        <div class="tableWrap">
+          <table class="table" id="logsTable"></table>
+        </div>
+        <div class="rowBtns" id="logsPager" style="margin-top:12px"></div>
+      </section>
+
+      <section class="tabpane" id="paneBackups" hidden>
+        <h2 class="h2">Бекапы</h2>
+        <div class="formCol formCol--spaced">
+          <label class="rowLine rowLine--check"><input type="checkbox" id="bkEnabled" /> <span>Включить авто‑бекапы</span></label>
+          <label>
+            <span>Частота (в минутах)</span>
+            <input type="number" id="bkFreq" min="10" step="10" value="1440" />
+          </label>
+          <label class="rowLine rowLine--check"><input type="checkbox" id="bkAutoDelete" /> <span>Включить автоудаление бекапов</span></label>
+          <label>
+            <span>Хранить бекапы (дней)</span>
+            <input type="number" id="bkKeepDays" min="1" step="1" value="30" />
+          </label>
+          <div class="rowBtns">
+            <button class="btn btn--secondary" id="bkSave" type="button">Сохранить</button>
+            <button class="btn btn--primary" id="bkRun" type="button">Сделать бекап сейчас</button>
+            <button class="btn btn--secondary" id="bkTgTest" type="button">Тест Telegram</button>
+            <button class="btn btn--secondary" id="bkPushTest" type="button">Тест Push</button>
+          </div>
+        </div>
+        <div class="tableWrap" style="margin-top:12px">
+          <table class="table" id="bkTable"></table>
+        </div>
+      </section>
+
+
+
+    </section>
+  </main>
+
+  <script src="/js/siteBranding.js"></script>
+  <script>SiteBranding.loadAndApply("miniadmin");</script>
+  <script src="/admin/js/script.js"></script>
+
+
+  <!-- Modal: Edit permissions -->
+  <div class="modal" id="permModal" hidden>
+    <div class="modal__panel">
+      <div class="modal__head">
+        <div class="modal__title">Доступы пользователя</div>
+        <button class="iconbtn" type="button" id="permClose">×</button>
+      </div>
+      <div class="form" style="display:flex;flex-direction:column;gap:10px">
+        <div class="muted" id="permUserLabel"></div>
+        <label class="check"><input type="checkbox" id="permEdit_links" /> <span>Ссылки</span></label>
+        <label class="check"><input type="checkbox" id="permEdit_branding" /> <span>Брендинг</span></label>
+        <label class="check"><input type="checkbox" id="permEdit_users" /> <span>Пользователи</span></label>
+        <button class="btn btn--primary" type="button" id="permSave">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

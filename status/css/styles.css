@@ -1,0 +1,196 @@
+:root{
+  --bg: #ffffff;
+  --text: #000000;
+  --accent: #7B5CFA;            /* фиолетовый */
+  --accent-2: #7B5CFA;          /* чуть другой, если захочешь */
+  --divider: #7B5CFA;           /* линии */
+  --footer-h: 120px;
+  --header-h: 88px;
+  --content-pad-x: 22px;
+  --line-w: 2px;
+}
+
+*{ box-sizing: border-box; }
+html, body{ height: 100%; }
+body{
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+.page{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.main{
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr var(--line-w) 1fr;
+  min-height: 0;
+}
+
+.panel{
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.panel__header{
+  height: var(--header-h);
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--content-pad-x);
+  margin: 12px 14px 0 14px;
+}
+
+.panel__header--right{
+  margin-left: 14px;
+  margin-right: 14px;
+}
+
+.panel__title{
+  margin: 0;
+  font-weight: 400; /* как на скрине — не жирный */
+  font-size: 44px;
+  letter-spacing: 0.2px;
+  color: #fff;
+}
+
+.panel__body{
+  flex: 1;
+  min-height: 0;
+  padding: 26px var(--content-pad-x) 0 var(--content-pad-x);
+}
+
+.prepareNumbers{
+  display: flex;
+  gap: 54px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.prepareNumber{
+  font-size: 76px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+.divider{
+  background: var(--divider);
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+/* Правая часть */
+.panel__body--right{
+  padding-top: 28px;
+}
+
+.cashRows{
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.cashRow{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 22px;
+}
+
+.cashRow__label{
+  font-size: 64px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.pill{
+  min-width: 156px;
+  height: 74px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+@keyframes blinkPill{0%,100%{opacity:1}50%{opacity:.15}}
+.pill.blink{animation:blinkPill .55s ease-in-out 6}
+
+/* Footer */
+.footer{
+  height: var(--footer-h);
+  border-top: var(--line-w) solid var(--divider);
+  display: grid;
+  grid-template-columns: 220px 1fr 220px;
+  align-items: center;
+  padding: 0 22px;
+}
+
+.logo{
+  height: 54px;
+  width: auto;
+  display: block;
+}
+
+.footer__center{
+  text-align: center;
+  font-size: 34px;
+  font-weight: 400;
+}
+
+.footer__center b{
+  font-weight: 900;
+}
+
+.soundBtn{
+  justify-self: end;
+  width: 54px;
+  height: 54px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.soundBtn:active{
+  transform: translateY(1px);
+}
+
+/* Простые inline SVG через mask (иконки без картинок) */
+.soundIcon{
+  width: 28px;
+  height: 28px;
+  display: inline-block;
+  background: var(--accent);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+}
+
+/* адаптив (на всякий) */
+@media (max-width: 1200px){
+  .panel__title{ font-size: 34px; }
+  .cashRow__label{ font-size: 52px; }
+  .pill{ height: 66px; font-size: 50px; }
+  .prepareNumber{ font-size: 64px; }
+  .footer__center{ font-size: 28px; }
+}
+
+/* Dark theme (status only) */
+.theme-dark body { background: #1f232a; color: #f2f4f7; }
+.theme-dark .card { background: #262b33; }

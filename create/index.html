@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Создание электронной очереди</title>
+
+  <!-- Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/create/css/styles.css" />
+</head>
+<body>
+  <main class="page">
+    <section class="card" aria-label="Создание электронной очереди">
+      <!-- справа -->
+      <div class="brand">
+        <img id="logoImg" data-brand-logo class="logo" alt="Логотип" />
+        <h1 class="title">Создание электронной очереди</h1>
+      </div>
+
+      <div class="field">
+        <input id="queueName" class="input" type="text" placeholder="Название очереди" autocomplete="off" />
+      </div>
+
+      <h2 class="section-title">Пользовательский ввод</h2>
+
+      <div class="toggle-row">
+        <button id="requireToggle" class="switch" type="button" role="switch" aria-checked="false" aria-label="Требовать посетителей вводить информацию">
+          <span class="switch-track"></span>
+          <span class="switch-thumb"></span>
+        </button>
+
+        <label class="toggle-label" for="requireToggle">Требовать посетителей вводить информацию</label>
+      </div>
+
+      <p class="muted">
+        Вы можете просить посетителей указать какую-либо информацию при регистрации в очереди.
+        Это может быть: имя, контактная информация, номер автомобиля и т.п.
+        Информация будет отображена в интерфейсе управления очередью напротив номера посетителя
+      </p>
+
+      <div id="userPromptWrap" class="field hidden">
+        <input id="userPrompt" class="input input-accent" type="text"
+               placeholder="Требование ввести информацию, например: «Введите ваше имя»" autocomplete="off" />
+      </div>
+
+      <div id="maskWrap" class="field hidden">
+        <select id="inputMask" class="input input-accent" aria-label="Маска ввода">
+          <option value="uuid">UUID / ID (по умолчанию)</option>
+          <option value="digits">Только цифры</option>
+          <option value="any">Любые символы</option>
+        </select>
+      </div>
+
+      <h2 class="section-title">Кассы</h2>
+      <p class="muted">
+        Добавьте кассы обслуживания клиентов и присвойте им имена, например: "Касса 1",
+        "Касса 2" и т.д. Присвоенное имя будет использовано QRQ для навигации пользователей
+        в интерфейсе и уведомлениях
+      </p>
+
+      <div id="cashiersList" class="list"></div>
+
+      <button id="addCashierBtn" class="add-btn" type="button">
+        <span class="plus">＋</span>
+        <span>Добавить кассу</span>
+      </button>
+
+      <h2 class="section-title">Услуги</h2>
+      <p class="muted">
+        Добавьте услуги, например: "Пополнение рубля", "Вывод рубля" и т.д. Присвоенное имя
+        будет использовано для маршрутизации пользователей в кассы, которые обрабатывают
+        соответствующую услугу.
+      </p>
+
+      <div id="servicesList" class="list"></div>
+
+      <button id="addServiceBtn" class="add-btn" type="button">
+        <span class="plus">＋</span>
+        <span>Добавить услугу</span>
+      </button>
+
+      <div class="footer">
+        <button id="createBtn" class="primary" type="button" disabled>Создать</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/i18n.js"></script>
+  <script src="/js/siteBranding.js"></script>
+  <script>SiteBranding.loadAndApply("create");</script>
+  <script src="/create/js/script.js"></script>
+</body>
+</html>

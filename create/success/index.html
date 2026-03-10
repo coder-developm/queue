@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Готово — очередь создана</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/create/success/css/styles.css" />
+  </head>
+
+  <body>
+    <main class="page">
+      <section class="wrap" aria-label="Готово. Информация об очереди">
+        <img class="logo" id="logo" data-brand-logo alt="Логотип" />
+
+        <h1 class="title">Готово. Теперь дело за вами!</h1>
+
+        <p class="desc">
+          Распечатайте и разместите QR-код так, чтобы посетители могли<br />
+          легко увидеть и сканировать его. Не давайте ссылку для<br />
+          управления очередью посторонним людям.
+        </p>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="copyBtn" type="button">
+            <span class="btn-ic" aria-hidden="true">
+              <!-- simple copy icon -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M8 7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2V7Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M6 17H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </span>
+            <span>Скопировать информацию</span>
+          </button>
+
+          <a class="link" id="createMore" href="javascript:void(0)">
+            <span class="plus" aria-hidden="true">+</span>
+            <span>Создать еще очереди</span>
+          </a>
+        </div>
+
+        <div class="card" id="infoCard">
+          <div class="card-title">
+            <span class="card-title__label">Очередь:</span>
+            <span class="card-title__value">jandonka-test</span>
+          </div>
+
+          <div class="card-lines" id="infoText">
+            <div class="line">
+              <span class="k">Ссылка на очередь (для QR кода):</span>
+              <a class="v" href="https://aiforypro.qrq.app/8005193" target="_blank" rel="noreferrer">
+                https://aiforypro.qrq.app/8005193
+              </a>
+            </div>
+            <div class="line">
+              <span class="k">Плакат с QR кодом:</span>
+              <a class="v" href="https://aiforypro.qrq.app/poster/8005193" target="_blank" rel="noreferrer">
+                https://aiforypro.qrq.app/poster/8005193
+              </a>
+            </div>
+            <div class="line">
+              <span class="k">Управление очередью:</span>
+              <a class="v" href="https://aiforypro.qrq.app/a/8005193/AoyfIGr..." target="_blank" rel="noreferrer">
+                https://aiforypro.qrq.app/a/8005193/AoyfIGr...
+              </a>
+            </div>
+            <div class="line">
+              <span class="k">Табло статуса очереди:</span>
+              <a class="v" href="https://aiforypro.qrq.app/status/8005193" target="_blank" rel="noreferrer">
+                https://aiforypro.qrq.app/status/8005193
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal" id="modal" aria-hidden="true">
+      <div class="modal__backdrop" id="modalBackdrop"></div>
+
+      <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+        <div class="modal__content">
+          <div class="modal__title" id="modalTitle">Успешно!</div>
+          <div class="modal__desc" id="modalDesc">
+            Скопировано. Сохраните информацию в надёжном месте, чтобы не потерять.
+          </div>
+
+          <div class="modal__footer">
+            <button class="btn btn-ok" id="modalOk" type="button">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/siteBranding.js"></script>
+    <script>SiteBranding.loadAndApply("success");</script>
+    <script src="/create/success/js/script.js"></script>
+  </body>
+</html>
